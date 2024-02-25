@@ -45,11 +45,6 @@ def download_data():
 with st.spinner('Downloading data, please wait...'):
     download_data()
 
-
-st.write(os.getcwd())
-
-
-
 show_pages(
     [
         Page("Introduction.py", "Introduction", "📖"),
