@@ -1,0 +1,88 @@
+# =======================       IMPORTS       ========================== #
+#!pip install st-pages
+
+import streamlit as st
+from st_pages import Page, show_pages
+import pandas as pd
+
+# =======================    PAGE  CONFIG    ========================== #
+
+st.set_page_config(
+    page_title="INPE Amazon Data Analysis",
+    page_icon="🌳",
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
+
+show_pages(
+    [
+        Page("Introduction.py", "Introduction", "📖"),
+        Page("pages/DETER.py", "DETER", "⚠️"),
+        Page("pages/PRODES.py", "PRODES", "🌳"),
+        Page("pages/queimadas.py", "QUEIMADAS\n", "🔥"),
+    ]
+)
+# st.markdown(
+#     """
+# <style>
+#     [data-testid="collapsedControl"] {
+#         display: none
+#     }
+# </style>
+# """,
+#     unsafe_allow_html=True,
+# )
+
+# =======================       TEXTS       ========================== #
+df_texts = pd.read_csv('texts/texts_introduction.csv', sep='§', engine='python')
+english = {list(df_texts['Key'])[i]: list(df_texts['English'])[i] for i in range(len(list(df_texts['Key'])))}
+portuguese = {list(df_texts['Key'])[i]: list(df_texts['Portuguese'])[i] for i in range(len(list(df_texts['Key'])))}
+
+def get_texts(lang):
+    if lang == "English":
+        return english
+    else:
+        return portuguese
+
+# ======================= lANGUAGE SETTINGS  ========================== #
+languages = {"English": "en", "Portuguese": "pt"}
+
+dict_params = st.query_params.to_dict()
+
+if "lang" not in dict_params.keys():
+    st.query_params["lang"] = "en"
+    st.rerun()
+
+
+def set_language() -> None:
+    if "selected_language" in st.session_state:
+        st.query_params["lang"] = languages.get(st.session_state["selected_language"])
+
+# =======================     SIDE BAR      ========================== #
+
+col1, col2, col3, col4 = st.columns(4)
+
+
+with st.sidebar:
+    sel_lang = st.radio(
+        "Language", options=languages,
+        horizontal=True, 
+        on_change=set_language,
+        key="selected_language")
+    
+    texts = get_texts(sel_lang)
+
+# =======================      HEADER       ========================== #
+st.divider()
+st.markdown("<h3 style='text-align: center; color: red;'>" + "⚠️  " + texts['construction'] + "  ⚠️" + "</h3>", unsafe_allow_html=True)
+st.divider()
+
+st.image('fire3.png')
+st.markdown("<h2 style='text-align: center;'>" + texts['title'] + "</h3>", unsafe_allow_html=True)
+st.markdown("<h5 style='text-align: center;'>" + texts['sub_title'] + "</h3></br>", unsafe_allow_html=True)
+
+
+
+st.markdown(texts['introduction'])
+
+
