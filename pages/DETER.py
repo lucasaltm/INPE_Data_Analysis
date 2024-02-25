@@ -24,6 +24,40 @@ import base64
 from io import BytesIO
 import ast
 
+import os
+file_path = 'data/brazilian_legal_amazon/brazilian_legal_amazon.shp'
+if os.path.exists(file_path):
+    print("exists")
+else:
+    print("!exists")
+
+
+# =======================   READING DATA    ========================== #
+@st.cache_data(show_spinner=False)
+def load_data():
+    alerts = gpd.read_file('data/deter-amz-public-2024fev02/deter-amz-deter-public.shp', encoding='utf-8')
+    #gdf_deter['VIEW_DATE'] = pd.to_datetime(gdf_deter['VIEW_DATE'])
+
+    alerts.loc[alerts['CLASSNAME'] == 'DEGRDACAO', 'CLASSNAME'] = 'DEGRADACAO'
+    alerts = alerts[~(alerts['CLASSNAME'] == 'CORTE_SELETIVO')]
+    alerts['VIEW_DATE'] = pd.to_datetime(alerts['VIEW_DATE'])
+    alerts['ANO'] = alerts['VIEW_DATE'].dt.year
+    alerts['MES'] = alerts['VIEW_DATE'].dt.month
+    alerts['MES/ANO'] = alerts['VIEW_DATE'].dt.strftime('%Y-%m')
+
+    df_deter = pd.DataFrame(alerts)
+    df_deter = df_deter.drop(columns=['FID', 'QUADRANT', 'PATH_ROW', 'SENSOR', 'SATELLITE', 'geometry'])
+    # df_deter['NOME_ESTADO'] = df_deter['UF'].map(estados)
+    # df_deter['STATE'] = df_deter['NOME_ESTADO'] + ' (' + df_deter['UF'] + ')   '
+
+    legal_amazon = gpd.read_file('data\\brazilian_legal_amazon\\brazilian_legal_amazon.shp',encoding='utf-8')
+    states = gpd.read_file('data\\states_legal_amazon\\states_legal_amazon.shp',encoding='utf-8')
+    
+    return alerts, df_deter, legal_amazon, states
+
+with st.spinner('Loading Project, please wait...'):
+    alerts, df_deter, legal_amazon, states = load_data()
+
 # =======================    PAGE  CONFIG    ========================== #
 icon = "⚠️"
 
@@ -100,32 +134,6 @@ with st.sidebar:
         key="selected_language",)
     
     dict_classes, texts = get_texts(sel_lang)
-
-# =======================   READING DATA    ========================== #
-@st.cache_data(show_spinner=False)
-def load_data():
-    alerts = gpd.read_file('data/deter-amz-public-2024fev02/deter-amz-deter-public.shp', encoding='utf-8')
-    #gdf_deter['VIEW_DATE'] = pd.to_datetime(gdf_deter['VIEW_DATE'])
-
-    alerts.loc[alerts['CLASSNAME'] == 'DEGRDACAO', 'CLASSNAME'] = 'DEGRADACAO'
-    alerts = alerts[~(alerts['CLASSNAME'] == 'CORTE_SELETIVO')]
-    alerts['VIEW_DATE'] = pd.to_datetime(alerts['VIEW_DATE'])
-    alerts['ANO'] = alerts['VIEW_DATE'].dt.year
-    alerts['MES'] = alerts['VIEW_DATE'].dt.month
-    alerts['MES/ANO'] = alerts['VIEW_DATE'].dt.strftime('%Y-%m')
-
-    df_deter = pd.DataFrame(alerts)
-    df_deter = df_deter.drop(columns=['FID', 'QUADRANT', 'PATH_ROW', 'SENSOR', 'SATELLITE', 'geometry'])
-    # df_deter['NOME_ESTADO'] = df_deter['UF'].map(estados)
-    # df_deter['STATE'] = df_deter['NOME_ESTADO'] + ' (' + df_deter['UF'] + ')   '
-
-    legal_amazon = gpd.read_file('data\\brazilian_legal_amazon\\brazilian_legal_amazon.shp',encoding='utf-8')
-    states = gpd.read_file('data\\states_legal_amazon\\states_legal_amazon.shp',encoding='utf-8')
-    
-    return alerts, df_deter, legal_amazon, states
-
-with st.spinner('Loading Project, please wait...'):
-    alerts, df_deter, legal_amazon, states = load_data()
 
 # =======================      HEADER       ========================== #
 #LOGO DETER
