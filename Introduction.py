@@ -45,12 +45,9 @@ def download_data():
 with st.spinner('Downloading data, please wait...'):
     download_data()
 
-#
-file_path = 'data/brazilian_legal_amazon/brazilian_legal_amazon.shp'
-if os.path.exists(file_path):
-    st.write("existe")
-else:
-    st.write("não existe")
+
+st.write(os.getcwd())
+
 
 
 show_pages(
