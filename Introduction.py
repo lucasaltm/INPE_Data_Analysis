@@ -4,7 +4,9 @@
 import streamlit as st
 from st_pages import Page, show_pages
 import pandas as pd
-
+import os
+import zipfile
+import gdown
 # =======================    PAGE  CONFIG    ========================== #
 
 st.set_page_config(
@@ -13,6 +15,34 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded"
 )
+
+def isDataDownloaded():
+    folder = 'data'
+    total = 6
+
+    downloaded = False
+    
+    if os.path.exists(folder):
+        num = len([nome for nome in os.listdir(folder)])
+        if num == total:
+            return True
+
+    return downloaded
+
+def download_data():
+    d = isDataDownloaded()
+
+    while not d:
+        output = 'data.zip'
+        data_link = 'https://drive.google.com/uc?id=1TN-Bi66ulQNoiIvLs963jqmi5E8NUTuD&export=download'
+        
+        gdown.download(data_link, output, quiet=False)
+        
+        with zipfile.ZipFile('data.zip', 'r') as zip_ref:
+            zip_ref.extractall('.')
+        d = isDataDownloaded()
+with st.spinner('Downloading data, please wait...'):
+    download_data()
 
 show_pages(
     [
