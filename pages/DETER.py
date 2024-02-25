@@ -43,8 +43,8 @@ def load_data():
     # df_deter['NOME_ESTADO'] = df_deter['UF'].map(estados)
     # df_deter['STATE'] = df_deter['NOME_ESTADO'] + ' (' + df_deter['UF'] + ')   '
 
-    legal_amazon = gpd.read_file('data\\brazilian_legal_amazon\\brazilian_legal_amazon.shp',encoding='utf-8')
-    states = gpd.read_file('data\\states_legal_amazon\\states_legal_amazon.shp',encoding='utf-8')
+    legal_amazon = gpd.read_file('data/brazilian_legal_amazon/brazilian_legal_amazon.shp',encoding='utf-8')
+    states = gpd.read_file('data/states_legal_amazon/states_legal_amazon.shp',encoding='utf-8')
     
     return alerts, df_deter, legal_amazon, states
 
@@ -661,8 +661,8 @@ def folium_add_markers(container, df_data, geo_df, get_centroid_mode, df_deter, 
 def states_map():
     
     ############# Data Preparation #############
-    legal_amazon = gpd.read_file('data\\brazilian_legal_amazon\\brazilian_legal_amazon.shp',encoding='utf-8')
-    states = gpd.read_file('data\\states_legal_amazon\\states_legal_amazon.shp',encoding='utf-8')
+    legal_amazon = gpd.read_file('data/brazilian_legal_amazon/brazilian_legal_amazon.shp',encoding='utf-8')
+    states = gpd.read_file('data/states_legal_amazon/states_legal_amazon.shp',encoding='utf-8')
     
     df_deter = alerts.copy()
     gb_uf = df_deter.groupby('UF')['AREAMUNKM'].sum().sort_values(ascending=False)
@@ -707,15 +707,15 @@ def states_map():
 def cities_map(filter=[]):
     
     ############# Data Preparation #############
-    ac = gpd.read_file('data\malhas_regionais_ibge\AC_Municipios_2022\AC_Municipios_2022.shp', encoding='utf-8')
-    am = gpd.read_file('data\malhas_regionais_ibge\AM_Municipios_2022\AM_Municipios_2022.shp', encoding='utf-8')
-    ap = gpd.read_file('data\malhas_regionais_ibge\AP_Municipios_2022\AP_Municipios_2022.shp', encoding='utf-8')
-    ma = gpd.read_file('data\malhas_regionais_ibge\MA_Municipios_2022\MA_Municipios_2022.shp', encoding='utf-8')
-    mt = gpd.read_file('data\malhas_regionais_ibge\MT_Municipios_2022\MT_Municipios_2022.shp', encoding='utf-8')
-    pa = gpd.read_file('data\malhas_regionais_ibge\PA_Municipios_2022\PA_Municipios_2022.shp', encoding='utf-8')
-    ro = gpd.read_file('data\malhas_regionais_ibge\RO_Municipios_2022\RO_Municipios_2022.shp', encoding='utf-8')
-    rr = gpd.read_file('data\malhas_regionais_ibge\RR_Municipios_2022\RR_Municipios_2022.shp', encoding='utf-8')
-    to = gpd.read_file('data\malhas_regionais_ibge\TO_Municipios_2022\TO_Municipios_2022.shp', encoding='utf-8')
+    ac = gpd.read_file('data/malhas_regionais_ibge/AC_Municipios_2022/AC_Municipios_2022.shp', encoding='utf-8')
+    am = gpd.read_file('data/malhas_regionais_ibge/AM_Municipios_2022/AM_Municipios_2022.shp', encoding='utf-8')
+    ap = gpd.read_file('data/malhas_regionais_ibge/AP_Municipios_2022/AP_Municipios_2022.shp', encoding='utf-8')
+    ma = gpd.read_file('data/malhas_regionais_ibge/MA_Municipios_2022/MA_Municipios_2022.shp', encoding='utf-8')
+    mt = gpd.read_file('data/malhas_regionais_ibge/MT_Municipios_2022/MT_Municipios_2022.shp', encoding='utf-8')
+    pa = gpd.read_file('data/malhas_regionais_ibge/PA_Municipios_2022/PA_Municipios_2022.shp', encoding='utf-8')
+    ro = gpd.read_file('data/malhas_regionais_ibge/RO_Municipios_2022/RO_Municipios_2022.shp', encoding='utf-8')
+    rr = gpd.read_file('data/malhas_regionais_ibge/RR_Municipios_2022/RR_Municipios_2022.shp', encoding='utf-8')
+    to = gpd.read_file('data/malhas_regionais_ibge/TO_Municipios_2022/TO_Municipios_2022.shp', encoding='utf-8')
 
     df_cities = pd.concat([ac, am, ap, ma, mt, pa, ro, rr, to])
     df_cities.rename(columns={'CD_MUN':'GEOCODIBGE'}, inplace=True)
@@ -773,7 +773,7 @@ def normalize_string(s):
 def c_units_map():
 
     ############# Data Preparation #############
-    c_units = gpd.read_file('data\\conservation_units_legal_amazon\\conservation_units_legal_amazon.shp',encoding='utf-8')
+    c_units = gpd.read_file('data/conservation_units_legal_amazon/conservation_units_legal_amazon.shp',encoding='utf-8')
     c_units.rename(columns={'nome':'UC'},inplace=True)
     c_units['UC'] = c_units['UC'].apply(normalize_string)
     
