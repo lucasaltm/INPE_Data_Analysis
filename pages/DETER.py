@@ -24,13 +24,6 @@ import base64
 from io import BytesIO
 import ast
 
-import os
-file_path = 'data/brazilian_legal_amazon/brazilian_legal_amazon.shp'
-if os.path.exists(file_path):
-    print("exists")
-else:
-    print("!exists")
-
 
 # =======================   READING DATA    ========================== #
 @st.cache_data(show_spinner=False)
