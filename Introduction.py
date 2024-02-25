@@ -9,14 +9,6 @@ import zipfile
 import gdown
 # =======================    PAGE  CONFIG    ========================== #
 
-folder_path = 'data'
-if os.path.exists(folder_path):
-    for item in os.listdir(folder_path):
-        st.write(str(item))
-else:
-    st.write("pasta não existe")
-
-
 st.set_page_config(
     page_title="INPE Amazon Data Analysis",
     page_icon="🌳",
@@ -51,6 +43,13 @@ def download_data():
         d = isDataDownloaded()
 with st.spinner('Downloading data, please wait...'):
     download_data()
+
+folder_path = 'data'
+if os.path.exists(folder_path):
+    for item in os.listdir(folder_path):
+        st.write(str(item))
+else:
+    st.write("pasta não existe")
 
 show_pages(
     [
