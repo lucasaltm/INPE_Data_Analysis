@@ -12,9 +12,9 @@ import gdown
 folder_path = 'data'
 if os.path.exists(folder_path):
     for item in os.listdir(folder_path):
-        print(item)
+        st.write(str(item))
 else:
-    print("pasta não existe")
+    st.write("pasta não existe")
 
 
 st.set_page_config(
