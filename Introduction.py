@@ -41,15 +41,17 @@ def download_data():
         with zipfile.ZipFile('data.zip', 'r') as zip_ref:
             zip_ref.extractall('.')
         d = isDataDownloaded()
+
 with st.spinner('Downloading data, please wait...'):
     download_data()
 
-folder_path = 'data'
-if os.path.exists(folder_path):
-    for item in os.listdir(folder_path):
-        st.write(str(item))
+#
+file_path = 'data/brazilian_legal_amazon/brazilian_legal_amazon.shp'
+if os.path.exists(file_path):
+    st.write("existe")
 else:
-    st.write("pasta não existe")
+    st.write("não existe")
+
 
 show_pages(
     [
