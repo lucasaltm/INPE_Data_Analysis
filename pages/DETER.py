@@ -24,6 +24,15 @@ import base64
 from io import BytesIO
 import ast
 
+# =======================    PAGE  CONFIG    ========================== #
+icon = "⚠️"
+
+st.set_page_config(
+    page_title="DETER",
+    page_icon=icon,
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # =======================   READING DATA    ========================== #
 @st.cache_data(show_spinner=False)
@@ -50,16 +59,6 @@ def load_data():
 
 with st.spinner('Loading Project, please wait...'):
     alerts, df_deter, legal_amazon, states = load_data()
-
-# =======================    PAGE  CONFIG    ========================== #
-icon = "⚠️"
-
-st.set_page_config(
-    page_title="DETER",
-    page_icon=icon,
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # =======================       TEXTS       ========================== #
 
