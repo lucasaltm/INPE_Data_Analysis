@@ -730,6 +730,7 @@ def cities_map(filter=[]):
     # 226 cidades não contém avisos. Esses valores ausentes serão preenchidos com 0.
     merge['AREAMUNKM'].fillna(0, inplace=True)
 
+    st.cache_data.clear()
     #############       Folium       #############
     map = folium_map_init()
 
