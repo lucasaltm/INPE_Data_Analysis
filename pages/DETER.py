@@ -656,7 +656,6 @@ def folium_add_markers(container, df_data, geo_df, get_centroid_mode, df_deter, 
     
     return container
 
-@st.cache_data(show_spinner=False)
 def states_map():
     
     ############# Data Preparation #############
@@ -702,7 +701,6 @@ def states_map():
 
     return map._repr_html_()
 
-@st.cache_data(show_spinner=False)
 def cities_map(filter=[]):
     
     ############# Data Preparation #############
@@ -768,7 +766,6 @@ def normalize_string(s):
     s = s.upper()
     return s
 
-@st.cache_data(show_spinner=False)
 def c_units_map():
 
     ############# Data Preparation #############
@@ -890,8 +887,7 @@ with mapv:
 
     
     if seL_map == options[0]:
-        html_states = states_map()
-        components.html(center_map(html_states), height=900)
+        components.html(center_map(states_map()), height=900)
     
     elif seL_map == options[1]:
         df_estados = pd.DataFrame(list(estados.items()), columns=['UF', 'Nome'])
@@ -912,9 +908,7 @@ with mapv:
             filter = ['']
 
         with st.spinner('Loading visualization, please wait...'):
-            html_cities = cities_map(filter)
-            components.html(center_map(html_cities), height=900)
+            components.html(center_map(cities_map(filter)), height=900)
         
     elif seL_map == options[2]:
-        html_c_units = c_units_map()
-        components.html(center_map(html_c_units), height=900)
+        components.html(center_map(c_units_map()), height=900)
