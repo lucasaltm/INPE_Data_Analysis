@@ -277,19 +277,30 @@ with mapv:
     elif seL_map == options[1]:
         df_estados = pd.DataFrame(list(estados.items()), columns=['UF', 'Nome'])
         df_estados['Nome_UF'] = df_estados['Nome'] + ' (' + df_estados['UF'] + ')'
+        
 
-        ms_title = 'Escolha o estados que deseja visualizar no gráfico:'
+        lst_states = list(df_estados['Nome_UF'])
+        lst_states.append('All Cities')
+        
+        ms_title = 'Escolha o estado que deseja visualizar no gráfico:'
         option = st.selectbox(
             ms_title,
-            tuple(df_estados['Nome_UF']))
+            tuple(lst_states))
 
-        uf_sel = df_estados[df_estados['Nome_UF'] == (option)].UF
-        uf_sel = uf_sel.values[0]
-
-        map_name = 'Cities_' + st.query_params["lang"].upper() + '_' + uf_sel.upper()
         
-        with st.spinner('Loading visualization, please wait...'):
-            components.html(read_map(map_name), height=900)
+        if option != 'All Cities':
+            uf_sel = df_estados[df_estados['Nome_UF'] == (option)].UF
+            uf_sel = uf_sel.values[0]
+    
+            map_name = 'Cities_' + st.query_params["lang"].upper() + '_' + uf_sel.upper()
+            
+            with st.spinner('Loading visualization, please wait...'):
+                components.html(read_map(map_name), height=900)
+        else:
+            map_name = 'All_Cities_' + st.query_params["lang"].upper()
+            
+            with st.spinner('Loading visualization, please wait...'):
+                components.html(read_map(map_name), height=900)
         
     elif seL_map == options[2]:
         map_name = 'C_Units_' + st.query_params["lang"].upper()
